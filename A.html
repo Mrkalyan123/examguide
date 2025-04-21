@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp - Smart Learning Paths</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4a89dc;
+            --secondary-color: #48cfad;
+            --dark-color: #2c3e50;
+            --light-color: #f5f7fa;
+            --accent-color: #e6e9ed;
+            --text-color: #333;
+            --text-light: #777;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #3a70c2;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background: #37bc98;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        /* Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin: 30px auto;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--accent-color);
+            font-size: 16px;
+            padding-right: 50px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background: #3a70c2;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 150px 0 100px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Goals Section */
+        .goals {
+            background-color: white;
+            text-align: center;
+        }
+        
+        .goals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .goal-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .goal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .goal-card i {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .goal-card h3 {
+            font-size: 22px;
+        }
+
+        /* Category Filters */
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .category-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: var(--light-color);
+            border: 1px solid var(--accent-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .category-btn:hover:not(.active) {
+            background: var(--accent-color);
+        }
+        
+        /* Learning Mode Section */
+        .learning-mode {
+            background-color: var(--light-color);
+            text-align: center;
+        }
+        
+        .mode-switcher {
+            display: flex;
+            justify-content: center;
+            margin: 30px auto;
+            max-width: 500px;
+            border-radius: 50px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .mode-option {
+            flex: 1;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mode-option.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .mode-option:not(.active):hover {
+            background: var(--accent-color);
+        }
+        
+        .mode-content {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .mode-content.active {
+            display: block;
+        }
+        
+        .generate-plan {
+            margin-top: 30px;
+        }
+        
+        /* Resources Section */
+        .resources {
+            background-color: white;
+        }
+        
+        .resources h2 {
+            text-align: center;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--accent-color);
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: var(--light-color);
+            border-radius: 5px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .resource-list {
+            list-style: none;
+        }
+        
+        .resource-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--accent-color);
+        }
+        
+        .resource-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .resource-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resource-list a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Auth Forms */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--accent-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .switch-form {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+            font-size: 14px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .auth-buttons .btn {
+                width: 100%;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            section {
+                padding: 40px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .mode-switcher {
+                flex-direction: column;
+                border-radius: 10px;
+            }
+            
+            .mode-option {
+                padding: 10px;
+            }
+
+            .category-filters {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .category-filters::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Level<span>Up</span></a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#goals">Goals</a></li>
+                    <li><a href="#learning">Learning Modes</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li class="auth-buttons">
+                        <button class="btn btn-outline" onclick="openAuthModal('login')">Login</button>
+                        <button class="btn" onclick="openAuthModal('signup')">Sign Up</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Study smart, based on your goal</h1>
+            <p>LevelUp helps you create personalized learning paths to achieve your academic and career objectives efficiently.</p>
+            <a href="#goals" class="btn btn-secondary">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Goals Section -->
+    <section class="goals" id="goals">
+        <div class="container">
+            <h2>Choose Your Goal</h2>
+            <p>Select what you want to achieve and we'll create a customized plan for you</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" id="goalSearch" placeholder="Search for exams, subjects or skills...">
+                <button class="search-button" onclick="searchGoals()"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="category-filters">
+                <button class="category-btn active" onclick="filterGoals('all')">All</button>
+                <button class="category-btn" onclick="filterGoals('engineering')">Engineering</button>
+                <button class="category-btn" onclick="filterGoals('school')">School</button>
+                <button class="category-btn" onclick="filterGoals('competitive')">Competitive Exams</button>
+                <button class="category-btn" onclick="filterGoals('career')">Career Skills</button>
+                <button class="category-btn" onclick="filterGoals('language')">Languages</button>
+            </div>
+            
+            <div class="goals-container" id="goalsContainer">
+                <div class="goal-card" data-categories="engineering competitive" data-search="gate graduate aptitude test in engineering">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Prepare for GATE</h3>
+                    <p>Comprehensive preparation for Graduate Aptitude Test in Engineering</p>
+                </div>
+                
+                <div class="goal-card" data-categories="engineering career" data-search="dsa data structures algorithms coding">
+                    <i class="fas fa-code"></i>
+                    <h3>Learn DSA</h3>
+                    <p>Master Data Structures and Algorithms from basics to advanced</p>
+                </div>
+                
+                <div class="goal-card" data-categories="career" data-search="job interview placement technical">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Get Job-ready</h3>
+                    <p>Prepare for technical interviews and land your dream job</p>
+                </div>
+                
+                <div class="goal-card" data-categories="school competitive" data-search="test exam revision">
+                    <i class="fas fa-clock"></i>
+                    <h3>Revise for upcoming test</h3>
+                    <p>Quick revision strategies for your next exam</p>
+                </div>
+
+                <div class="goal-card" data-categories="engineering career" data-search="fsd full stack development web dev">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Learn Full Stack Development</h3>
+                    <p>Become a full stack developer with end-to-end web development skills</p>
+                </div>
+
+                <div class="goal-card" data-categories="school" data-search="physics class 7 7th grade">
+                    <i class="fas fa-atom"></i>
+                    <h3>7th Class Physics</h3>
+                    <p>Master 7th grade physics concepts and fundamentals</p>
+                </div>
+
+                <div class="goal-card" data-categories="competitive" data-search="cat common admission test mba">
+                    <i class="fas fa-business-time"></i>
+                    <h3>Prepare for CAT</h3>
+                    <p>Get ready for Common Admission Test for MBA programs</p>
+                </div>
+
+                <div class="goal-card" data-categories="language" data-search="english ielts toefl speaking writing">
+                    <i class="fas fa-language"></i>
+                    <h3>English Proficiency</h3>
+                    <p>Improve English for IELTS, TOEFL or general communication</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Mode Section -->
+    <section class="learning-mode" id="learning">
+        <div class="container">
+            <h2>Select Your Learning Mode</h2>
+            <p>Choose how you want to approach your studies</p>
+            
+            <div class="mode-switcher">
+                <div class="mode-option active" onclick="switchMode(this, 'quick')">Quick Revision</div>
+                <div class="mode-option" onclick="switchMode(this, 'deep')">Deep Learning</div>
+            </div>
+            
+            <div class="mode-content active" id="quick-mode">
+                <h3>Quick Revision Mode</h3>
+                <p>Focus on key concepts and high-yield topics. Perfect for last-minute preparation or when time is limited.</p>
+                <ul>
+                    <li>Summarized notes</li>
+                    <li>Important formulas and concepts</li>
+                    <li>Practice with previous year questions</li>
+                    <li>Focused revision sessions</li>
+                </ul>
+            </div>
+            
+            <div class="mode-content" id="deep-mode">
+                <h3>Deep Learning Mode</h3>
+                <p>Comprehensive understanding with in-depth coverage. Ideal for building strong foundations.</p>
+                <ul>
+                    <li>Detailed explanations</li>
+                    <li>Step-by-step problem solving</li>
+                    <li>Conceptual understanding</li>
+                    <li>Practice with varied difficulty levels</li>
+                </ul>
+            </div>
+            
+            <button class="btn generate-plan" onclick="generatePlan()">Generate My Study Plan</button>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources" id="resources">
+        <div class="container">
+            <h2>Resources & Preparation</h2>
+            <p>Access study materials, deadlines, and practice resources</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'deadlines')">Exam Deadlines</button>
+                <button class="tab-btn" onclick="openTab(event, 'papers')">Previous Papers</button>
+                <button class="tab-btn" onclick="openTab(event, 'interview')">Interview Prep</button>
+            </div>
+            
+            <div id="deadlines" class="tab-content active">
+                <h3>Upcoming Exam Deadlines</h3>
+                <ul class="resource-list">
+                    <li><strong>GATE 2024:</strong> Registration closes October 20, 2023</li>
+                    <li><strong>CAT 2023:</strong> November 26, 2023</li>
+                    <li><strong>GRE General Test:</strong> Next available date - December 15, 2023</li>
+                    <li><strong>TOEFL:</strong> Next available date - January 10, 2024</li>
+                    <li><strong>JEE Main 2024:</strong> Session 1 - January 24-31, 2024</li>
+                    <li><strong>NEET 2024:</strong> May 5, 2024</li>
+                </ul>
+            </div>
+            
+            <div id="papers" class="tab-content">
+                <h3>Previous Year Papers</h3>
+                <ul class="resource-list">
+                    <li><a href="#" onclick="openModal('gate-papers')">GATE Previous 5 Years Papers</a></li>
+                    <li><a href="#" onclick="openModal('cat-papers')">CAT Previous Year Papers</a></li>
+                    <li><a href="#" onclick="openModal('gre-papers')">GRE Sample Papers</a></li>
+                    <li><a href="#" onclick="openModal('jee-papers')">JEE Main Previous Papers</a></li>
+                    <li><a href="#" onclick="openModal('neet-papers')">NEET Previous Papers</a></li>
+                    <li><a href="#" onclick="openModal('university-papers')">University Exam Papers</a></li>
+                </ul>
+            </div>
+            
+            <div id="interview" class="tab-content">
+                <h3>Interview Preparation Resources</h3>
+                <ul class="resource-list">
+                    <li><a href="#" onclick="openModal('dsa-questions')">Top 100 DSA Questions</a></li>
+                    <li><a href="#" onclick="openModal('system-design')">System Design Concepts</a></li>
+                    <li><a href="#" onclick="openModal('behavioral')">Behavioral Interview Questions</a></li>
+                    <li><a href="#" onclick="openModal('resume-tips')">Resume Building Tips</a></li>
+                    <li><a href="#" onclick="openModal('fsd-interview')">Full Stack Interview Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modals -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            
+            <div id="login-form" class="auth-form">
+                <h3 class="form-title">Login to LevelUp</h3>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password">
+                </div>
+                <button class="btn" onclick="login()">Login</button>
+                <div class="switch-form">
+                    Don't have an account? <a href="#" onclick="switchAuthForm('signup')">Sign up</a>
+                </div>
+            </div>
+            
+            <div id="signup-form" class="auth-form">
+                <h3 class="form-title">Create an Account</h3>
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm">Confirm Password</label>
+                    <input type="password" id="signup-confirm" placeholder="Confirm your password">
+                </div>
+                <button class="btn" onclick="signup()">Sign Up</button>
+                <div class="switch-form">
+                    Already have an account? <a href="#" onclick="switchAuthForm('login')">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modals -->
+    <div class="modal" id="gate-papers-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h3>GATE Previous Year Papers</h3>
+            <ul class="resource-list">
+                <li><a href="#">GATE 2023 Computer Science Paper</a></li>
+                <li><a href="#">GATE 2022 Computer Science Paper</a></li>
+                <li><a href="#">GATE 2021 Computer Science Paper</a></li>
+                <li><a href="#">GATE 2020 Computer Science Paper</a></li>
+                <li><a href="#">GATE 2019 Computer Science Paper</a></li>
+                <li><a href="#">GATE 2018 Computer Science Paper</a></li>
+            </ul>
+            <p>Solutions and answer keys available for all papers.</p>
+        </div>
+    </div>
+
+    <div class="modal" id="cat-papers-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h3>CAT Previous Year Papers</h3>
+            <ul class="resource-list">
+                <li><a href="#">CAT 2022 Question Paper</a></li>
+                <li><a href="#">CAT 2021 Question Paper</a></li>
+                <li><a href="#">CAT 2020 Question Paper</a></li>
+                <li><a href="#">CAT 2019 Question Paper</a></li>
+                <li><a href="#">CAT 2018 Question Paper</a></li>
+            </ul>
+            <p>Includes answer keys and percentile calculators.</p>
+        </div>
+    </div>
+
+    <div class="modal" id="dsa-questions-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h3>Top 100 DSA Questions</h3>
+            <p>These are the most frequently asked Data Structures and Algorithms questions in technical interviews:</p>
+            <ol class="resource-list">
+                <li>Reverse a linked list</li>
+                <li>Find middle element in a linked list</li>
+                <li>Detect cycle in a linked list</li>
+                <li>Implement stack using queues</li>
+                <li>Check balanced parentheses</li>
+                <li>...and 95 more essential questions</li>
+            </ol>
+            <button class="btn" onclick="closeModal()">Download Full List</button>
+        </div>
+    </div>
+
+    <div class="modal" id="fsd-interview-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h3>Full Stack Development Interview Questions</h3>
+            <p>Common questions for full stack developer positions:</p>
+            <ol class="resource-list">
+                <li>Explain the difference between REST and GraphQL</li>
+                <li>How would you optimize a slow database query?</li>
+                <li>Explain the React component lifecycle</li>
+                <li>What are JWT tokens and how do they work?</li>
+                <li>How would you implement authentication in a web app?</li>
+                <li>Explain the difference between SQL and NoSQL databases</li>
+            </ol>
+            <button class="btn" onclick="closeModal()">Download Full List</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>LevelUp</h3>
+                    <p>Smart learning paths for academic and career success.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#goals">Goals</a></li>
+                        <li><a href="#learning">Learning Modes</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:hello@levelup.com">hello@levelup.com</a></li>
+                        <li><a href="tel:+11234567890">+1 (123) 456-7890</a></li>
+                        <li>
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 LevelUp. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Goal Selection
+        function selectGoal(card, goal) {
+            const allCards = document.querySelectorAll('.goal-card');
+            allCards.forEach(c => c.style.borderColor = 'transparent');
+            
+            card.style.borderColor = '#48cfad';
+            console.log(Selected goal: ${goal});
+        }
+        
+        // Learning Mode Switcher
+        function switchMode(element, mode) {
+            const allOptions = document.querySelectorAll('.mode-option');
+            allOptions.forEach(opt => opt.classList.remove('active'));
+            
+            element.classList.add('active');
+            
+            document.getElementById('quick-mode').classList.remove('active');
+            document.getElementById('deep-mode').classList.remove('active');
+            document.getElementById(${mode}-mode).classList.add('active');
+        }
+        
+        // Tab System
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabButtons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+        
+        // Modal System
+        function openModal(modalType) {
+            document.getElementById(${modalType}-modal).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        // Auth Modal Functions
+        function openAuthModal(formType) {
+            document.getElementById('auth-modal').style.display = 'flex';
+            switchAuthForm(formType);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function switchAuthForm(formType) {
+            document.getElementById('login-form').classList.remove('active');
+            document.getElementById('signup-form').classList.remove('active');
+            document.getElementById(${formType}-form).classList.add('active');
+        }
+
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            // In a real app, you would send this to your backend
+            console.log('Login attempt with:', email, password);
+            alert('Login successful! (This is a demo)');
+            closeModal();
+        }
+
+        function signup() {
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
+            
+            if (!name || !email || !password || !confirm) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+            console.log('Signup attempt with:', { name, email, password });
+            alert('Signup successful! (This is a demo)');
+            closeModal();
+        }
+
+        // Goal Search Functionality
+        function searchGoals() {
+            const query = document.getElementById('goalSearch').value.toLowerCase();
+            const goalCards = document.querySelectorAll('.goal-card');
+
+            goalCards.forEach(card => {
+                const searchData = card.getAttribute('data-search').toLowerCase();
+                if (searchData.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Goal Filter Functionality
+        function filterGoals(category) {
+            const goalCards = document.querySelectorAll('.goal-card');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+
+            categoryButtons.forEach(button => button.classList.remove('active'));
+            document.querySelector(.category-btn[onclick="filterGoals('${category}')"]).classList.add('active');
+
+            goalCards.forEach(card => {
+                const cardCategories = card.getAttribute('data-categories').split(' ');
+                if (category === 'all' || cardCategories.includes(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Generate Study Plan Functionality
+        function generatePlan() {
+            const selectedGoal = document.querySelector('.goal-card[style*="border-color: rgb(72, 207, 173)"]');
+            const selectedMode = document.querySelector('.mode-option.active').textContent.trim();
+
+            if (!selectedGoal) {
+                alert('Please select a goal first.');
+                return;
+            }
+
+            const goalTitle = selectedGoal.querySelector('h3').textContent;
+            alert(Generating study plan for "${goalTitle}" in "${selectedMode}" mode. (This is a demo));
+            // In a real app, you would generate and display the study plan here
+        }
+    </script>
+</body>
+</html>
